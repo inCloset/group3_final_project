@@ -25,3 +25,4 @@ if st.button("Generate Meal Idea") and user_prompt:
   
 
 
+
