@@ -6,6 +6,7 @@ from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 
 
+
 load_dotenv
 API_KEY = os.getenv('OPENAI_API_KEY')
 
@@ -18,11 +19,13 @@ prompt_template = PromptTemplate(
     input_variables=["ingredients"]
 )
 
+
 meal_chain = LLMChain(
     llm=llm, 
     prompt=prompt_template, 
     verbose=True
 )
+
 
 st.title("Meal Planner")
 user_prompt = st.text_input("Enter ingredients (comma-separated):")
