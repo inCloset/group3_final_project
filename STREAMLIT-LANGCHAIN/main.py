@@ -1,10 +1,10 @@
+import streamlit as st
 from dotenv import load_dotenv
 import os
-import streamlit as st
 from langchain_openai import OpenAI
 from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
 
-load_dotenv(override=True)
 
 load_dotenv
 API_KEY = os.getenv('OPENAI_API_KEY')
@@ -18,12 +18,20 @@ prompt_template = PromptTemplate(
     input_variables=["ingredients"]
 )
 
+meal_chain = LLMChain(
+    llm=llm, 
+    prompt=prompt_template, 
+    verbose=True
+)
+
 st.title("Meal Planner")
 user_prompt = st.text_input("Enter ingredients (comma-separated):")
 
-if st.button("Generate Meal Idea") and user_prompt: 
-    output = llm(prompt_template.format(ingredients=user_prompt))
-    st.write(output)
+if st.button("Generate Meal Idea") and user_prompt:
+    with st.spinner("Generating meal idea..."): 
+        output = meal_chain,run(ingredients=user_prompt)
+        st.write(output)
   
+
 
 
