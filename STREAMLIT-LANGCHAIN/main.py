@@ -1,10 +1,8 @@
+import streamlit as st
 from dotenv import load_dotenv
 import os
-import streamlit as st
 from langchain_openai import OpenAI
 from langchain.prompts import PromptTemplate
-
-load_dotenv(override=True)
 
 load_dotenv
 API_KEY = os.getenv('OPENAI_API_KEY')
