@@ -4,78 +4,50 @@ import os
 from langchain_openai import OpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
-import yfinance as yf
-import pandas as pd
 
 # Load environment variables
 load_dotenv()
 API_KEY = os.getenv('OPENAI_API_KEY')
 
-# Initialize the LLM
-llm = OpenAI(openai_api_key=API_KEY, temperature=0.0)
+# Initialize OpenAI LLM
+llm = OpenAI(openai_api_key=API_KEY, temperature=0.3)
 
-# Create a prompt template for financial insights
+# Prompt template
 prompt_template = PromptTemplate(
-    template="""You are a financial advisor.
-    Based on the report type "{report_type}", generate insights about earnings, revenues, and profits for the company/companies: {company_names}.""",
-    input_variables=["company_names", "report_type"]
+    template="""
+    You are a financial analyst assistant.
+    Based on the report type "{report_type}", generate a financial summary 
+    that includes recent earnings, revenue growth, CEO sentiment, and 5-year 
+    profit/revenue forecasts for the company: {company_name}.
+
+    If the exact ticker is not provided, infer it automatically. Respond professionally.
+    """,
+    input_variables=["company_name", "report_type"]
 )
 
-# Create the LLM chain
-finance_chain = LLMChain(
-    llm=llm, 
-    prompt=prompt_template, 
+# Build the chain
+financial_chain = LLMChain(
+    llm=llm,
+    prompt=prompt_template,
     verbose=True
 )
 
-# Use Yahoo Finance to fetch financial data
-def get_financials(ticker):
-    try:
-        stock = yf.Ticker(ticker)
-        income_stmt = stock.financials.transpose()
-        revenue = income_stmt['Total Revenue']
-        return revenue
-    except Exception as e:
-        st.error(f"Couldn't fetch financials for {ticker.upper()}: {e}")
-        return None
+# Streamlit app UI
+st.title("📊 Financial Insights Generator")
+st.caption("Get AI-generated earnings summaries, CEO sentiment, and 5-year forecasts")
 
-# Function to plot revenue chart
-def plot_real_revenue_chart(ticker):
-    revenue_series = get_financials(ticker)
-    if revenue_series is not None:
-        df = revenue_series.reset_index()
-        df.columns = ['Year', 'Revenue']
-        df['Year'] = df['Year'].dt.year
-        st.subheader(f"{ticker.upper()} Revenue Trend")
-        st.line_chart(df.set_index('Year'))
+company_name = st.text_input("Enter a company name (e.g., Tesla, Apple, Google):")
 
-# Build the Streamlit app
-st.title("Financial Insights Generator")
-st.markdown("Get AI-generated earnings insights + actual revenue trends")
-
-# User input: company name(s)
-user_prompt = st.text_input("Enter company ticker(s), comma-separated (e.g., AAPL, MSFT):")
-
-# Dropdown for report type
 report_type = st.selectbox(
-    "Choose report focus:",
-    ["Earnings Summary", "Risks & Challenges", "Growth Opportunities", "CEO Tone Analysis"]
+    "Choose the type of financial report:",
+    ["Earnings Summary", "CEO Tone Analysis", "Growth Opportunities", "Risks & Challenges"]
 )
 
-# Button to trigger generation
-if st.button("Generate Financial Insights") and user_prompt:
-    with st.spinner("Generating insights..."):
-        output = finance_chain.run({
-            "company_names": user_prompt,
+if st.button("Generate Financial Insights") and company_name:
+    with st.spinner("Analyzing..."):
+        response = financial_chain.run({
+            "company_name": company_name,
             "report_type": report_type
         })
-
-        col1, col2 = st.columns([2, 1])
-
-        with col1:
-            st.subheader("AI Financial Summary")
-            st.write(output)
-
-        with col2:
-            for ticker in user_prompt.split(','):
-                plot_real_revenue_chart(ticker.strip().upper())
+        st.subheader("💬 AI Financial Report")
+        st.write(response)
