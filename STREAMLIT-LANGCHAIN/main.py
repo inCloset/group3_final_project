@@ -33,7 +33,7 @@ financial_chain = LLMChain(
 )
 
 # Streamlit app UI
-st.title("📊 Financial Insights Generator")
+st.title("Financial Insights Generator")
 st.caption("Get AI-generated earnings summaries, CEO sentiment, and 5-year forecasts")
 
 company_name = st.text_input("Enter a company name (e.g., Tesla, Apple, Google):")
@@ -49,5 +49,5 @@ if st.button("Generate Financial Insights") and company_name:
             "company_name": company_name,
             "report_type": report_type
         })
-        st.subheader("💬 AI Financial Report")
+        st.subheader("AI Financial Report")
         st.write(response)
