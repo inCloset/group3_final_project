@@ -36,7 +36,7 @@ user_prompt = st.text_input("Enter company (comma-separated):")
 
 if st.button("Generate financial answers") and user_prompt:
     with st.spinner("Generating financial answers..."): 
-        output = finance_chain.run(company_name=user_prompt)
+        output = finance_chain.run(company_names=user_prompt)
         st.write(output)
   
 
