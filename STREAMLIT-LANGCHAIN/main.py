@@ -46,11 +46,11 @@ def plot_real_revenue_chart(ticker):
         df = revenue_series.reset_index()
         df.columns = ['Year', 'Revenue']
         df['Year'] = df['Year'].dt.year
-        st.subheader(f"📈 {ticker.upper()} Revenue Trend")
+        st.subheader(f"{ticker.upper()} Revenue Trend")
         st.line_chart(df.set_index('Year'))
 
 # Build the Streamlit app
-st.title("📊 Financial Insights Generator")
+st.title("Financial Insights Generator")
 st.markdown("Get AI-generated earnings insights + actual revenue trends")
 
 # User input: company name(s)
@@ -73,7 +73,7 @@ if st.button("Generate Financial Insights") and user_prompt:
         col1, col2 = st.columns([2, 1])
 
         with col1:
-            st.subheader("💬 AI Financial Summary")
+            st.subheader("AI Financial Summary")
             st.write(output)
 
         with col2:
