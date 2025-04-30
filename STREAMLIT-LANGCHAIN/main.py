@@ -6,6 +6,8 @@ from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 
 
+
+
 #Load environment variables
 load_dotenv()
 API_KEY = os.getenv('OPENAI_API_KEY')
@@ -34,11 +36,10 @@ finance_chain = LLMChain(
 st.title("Financial Advices Generator")
 user_prompt = st.text_input("Enter company (comma-separated):")
 
-if st.button("Generate financial answers") and user_prompt:
-    with st.spinner("Generating financial answers..."): 
-        output = finance_chain.run(company_names=user_prompt)
-        st.write(output)
-  
+# Dropdown for report type
+report_type = st.selectbox(
+    "Choose report focus:",
+    ["Earnings Summary", "Risks & Challenges", "Growth Opportunities", "CEO Tone Analysis"]
 
 
 
