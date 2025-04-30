@@ -40,6 +40,6 @@ user_prompt = st.text_input("Enter company (comma-separated):")
 report_type = st.selectbox(
     "Choose report focus:",
     ["Earnings Summary", "Risks & Challenges", "Growth Opportunities", "CEO Tone Analysis"]
-
+)
 
 
