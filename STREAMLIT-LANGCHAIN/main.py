@@ -42,12 +42,56 @@ report_type = st.selectbox(
     "Choose report focus:",
     ["Earnings Summary", "Risks & Challenges", "Growth Opportunities", "CEO Tone Analysis"]
 )
-
+#Create the button to generate financial answers
 if st.button("Generate financial answers") and user_prompt:
     with st.spinner("Generating financial answers..."):
         output = finance_chain.run({
             "company_names": user_prompt,
             "report_type": report_type
         })
-        st.write(output)
+        
+        col1, col2 = st.columns([2, 1])
+
+        with col1:
+            st.subheader("💬 AI Financial Summary")
+            st.write(output)
+
+        with col2:
+            plot_real_revenue_chart(user_prompt.upper())
+        
+#Use Yahoo Finance to fetch financial data
+import yfinance as yf
+import pandas as pd
+
+def get_financials(ticker):
+    try:
+        stock = yf.Ticker(ticker)
+        income_stmt = stock.financials.transpose()  # Annual Income Statement
+        revenue = income_stmt['Total Revenue']
+        return revenue
+    except Exception as e:
+        st.error(f"Couldn't fetch financials for {ticker.upper()}: {e}")
+        return None
+
+
+# Function to plot revenue chart
+def plot_real_revenue_chart(ticker):
+    revenue_series = get_financials(ticker)
+    if revenue_series is not None:
+        df = revenue_series.reset_index()
+        df.columns = ['Year', 'Revenue']
+        df['Year'] = df['Year'].dt.year  # Convert to just year
+        st.subheader(f"📈 {ticker.upper()} Revenue Trend")
+        st.line_chart(df.set_index('Year'))
+
+
+col1, col2 = st.columns([2, 1])
+
+with col1:
+    st.subheader("💬 AI Financial Summary")
+    st.write(output)
+
+with col2:
+    plot_real_revenue_chart(user_prompt.upper())
+
 
