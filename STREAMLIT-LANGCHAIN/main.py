@@ -12,18 +12,18 @@ API_KEY = os.getenv('OPENAI_API_KEY')
 
 
 #Initialize the LLM
-llm = OpenAI(openai_api_key=API_KEY, temperature=0.9)
+llm = OpenAI(openai_api_key=API_KEY, temperature=0.0)
 
 
 #Create a prompt template
 prompt_template = PromptTemplate(
-    template="Give me an example of a meal that could be made using the following ingredients: {ingredients}",
-    input_variables=["ingredients"]
+    template="You are a financial Advisor, give earnings, revenues and profits based on companies input {company_names}.",
+    input_variables=["company_names"]
 )
 
 
 # Create the LLM chain
-meal_chain = LLMChain(
+finance_chain = LLMChain(
     llm=llm, 
     prompt=prompt_template, 
     verbose=True
@@ -31,12 +31,12 @@ meal_chain = LLMChain(
 
 
 #Build the Streamlit app
-st.title("Meal Planner")
-user_prompt = st.text_input("Enter ingredients (comma-separated):")
+st.title("Financial Advices Generator")
+user_prompt = st.text_input("Enter company (comma-separated):")
 
-if st.button("Generate Meal Idea") and user_prompt:
-    with st.spinner("Generating meal idea..."): 
-        output = meal_chain.run(ingredients=user_prompt)
+if st.button("Generate financial answers") and user_prompt:
+    with st.spinner("Generating financial answers..."): 
+        output = finance_chain.run(company_name=user_prompt)
         st.write(output)
   
 
