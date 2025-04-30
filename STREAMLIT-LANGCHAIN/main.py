@@ -10,7 +10,7 @@ load_dotenv()
 API_KEY = os.getenv('OPENAI_API_KEY')
 
 # Initialize OpenAI LLM
-llm = OpenAI(openai_api_key=API_KEY, temperature=0.3)
+llm = OpenAI(openai_api_key=API_KEY, temperature=0.0, max_tokens=1500)
 
 # Prompt template
 prompt_template = PromptTemplate(
