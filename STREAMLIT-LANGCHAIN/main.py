@@ -19,8 +19,9 @@ llm = OpenAI(openai_api_key=API_KEY, temperature=0.0)
 
 #Create a prompt template
 prompt_template = PromptTemplate(
-    template="You are a financial Advisor, give earnings, revenues and profits based on companies input {company_names}.",
-    input_variables=["company_names"]
+    template=""""You are a financial advisor.
+    Based on the report type "{report_type}", generate insights about earnings, revenues, and profits for the company/companies: {company_names}.""",
+    input_variables=["company_names", "report_type"]
 )
 
 
@@ -42,4 +43,11 @@ report_type = st.selectbox(
     ["Earnings Summary", "Risks & Challenges", "Growth Opportunities", "CEO Tone Analysis"]
 )
 
+if st.button("Generate financial answers") and user_prompt:
+    with st.spinner("Generating financial answers..."):
+        output = finance_chain.run({
+            "company_names": user_prompt,
+            "report_type": report_type
+        })
+        st.write(output)
 
