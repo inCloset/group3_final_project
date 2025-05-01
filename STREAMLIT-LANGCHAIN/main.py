@@ -89,7 +89,7 @@ if st.button("Generate Financial Insights") and company_name:
         import json
         try:
             parsed_sentiment = json.loads(sentiment_json)
-            st.markdown("### 📊 Sentiment Analysis")
+            st.markdown("### Sentiment Analysis")
             st.write(f"**Sentiment:** {parsed_sentiment['sentiment']}")
             st.write(f"**Score:** {parsed_sentiment['score']}")
             st.write(f"**Explanation:** {parsed_sentiment['reason']}")
