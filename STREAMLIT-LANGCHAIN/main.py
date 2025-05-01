@@ -83,7 +83,7 @@ if st.button("Generate Financial Insights") and company_name:
 
 
 # Analyze sentiment from the summary
-sentiment_json = sentiment_chain.run(summary=output)
+sentiment_json = sentiment_chain.run(summary=response)
 
 # Try to parse and display the result
 import json
