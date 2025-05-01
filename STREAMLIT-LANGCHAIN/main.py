@@ -5,9 +5,11 @@ from langchain_openai import OpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 
+
 # Load environment variables
 load_dotenv()
 API_KEY = os.getenv('OPENAI_API_KEY')
+
 
 # Initialize OpenAI LLM
 llm = OpenAI(openai_api_key=API_KEY, temperature=0.0, max_tokens=1500)
@@ -24,6 +26,7 @@ prompt_template = PromptTemplate(
     """,
     input_variables=["company_name", "report_type"]
 )
+
 
 # Build the chain
 financial_chain = LLMChain(
