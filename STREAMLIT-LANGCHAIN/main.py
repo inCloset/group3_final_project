@@ -72,6 +72,7 @@ report_type = st.selectbox(
     ["Earnings Summary", "CEO Tone Analysis", "Growth Opportunities", "Risks & Challenges"]
 )
 
+
 if st.button("Generate Financial Insights") and company_name:
     with st.spinner("Analyzing..."):
         response = financial_chain.run({
@@ -81,18 +82,18 @@ if st.button("Generate Financial Insights") and company_name:
         st.subheader("AI Financial Report")
         st.write(response)
 
+        # Analyze sentiment from the summary
+        sentiment_json = sentiment_chain.run(summary=response)
 
-# Analyze sentiment from the summary
-sentiment_json = sentiment_chain.run(summary=response)
+        # Try to parse and display the result
+        import json
+        try:
+            parsed_sentiment = json.loads(sentiment_json)
+            st.markdown("### 📊 Sentiment Analysis")
+            st.write(f"**Sentiment:** {parsed_sentiment['sentiment']}")
+            st.write(f"**Score:** {parsed_sentiment['score']}")
+            st.write(f"**Explanation:** {parsed_sentiment['reason']}")
+        except Exception as e:
+            st.warning("⚠️ Couldn't parse sentiment output from AI.")
+            st.text(sentiment_json)
 
-# Try to parse and display the result
-import json
-try:
-    parsed_sentiment = json.loads(sentiment_json)
-    st.markdown("### 📊 Sentiment Analysis")
-    st.write(f"**Sentiment:** {parsed_sentiment['sentiment']}")
-    st.write(f"**Score:** {parsed_sentiment['score']}")
-    st.write(f"**Explanation:** {parsed_sentiment['reason']}")
-except Exception as e:
-    st.warning("⚠️ Couldn't parse sentiment output from AI.")
-    st.text(sentiment_json)
