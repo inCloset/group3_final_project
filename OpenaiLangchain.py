@@ -5,9 +5,11 @@ from langchain_openai import OpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 
+
 # Load environment variables
 load_dotenv()
 API_KEY = os.getenv("OPENAI_API_KEY")
+
 
 # Initialize OpenAI LLM
 llm = OpenAI(openai_api_key=API_KEY, temperature=0.0, max_tokens=1500)
@@ -25,8 +27,31 @@ prompt_template = PromptTemplate(
     input_variables=["company_name", "report_type"],
 )
 
+
 # Build the chain
 financial_chain = LLMChain(llm=llm, prompt=prompt_template, verbose=True)
+
+# New prompt for sentiment analysis
+sentiment_template = PromptTemplate(
+    template="""
+You are a financial analyst. Based on the financial advice or summary below, rate the overall sentiment as 'positive', 'neutral', or 'negative'.
+Also provide a sentiment score between -1.0 (very negative) and +1.0 (very positive), and a brief explanation.
+
+Return only this JSON format:
+{{
+    "sentiment": "...",
+    "score": ...,
+    "reason": "..."
+}}
+
+Financial Summary:
+{summary}
+""",
+    input_variables=["summary"],
+)
+
+sentiment_chain = LLMChain(llm=llm, prompt=sentiment_template, verbose=False)
+
 
 # Streamlit app UI
 st.title("Financial Insights Generator")
@@ -43,9 +68,10 @@ report_type = st.selectbox(
         "Risks & Challenges",
         "Market Trends",
         "Financial Forecast",
-        "Sentiment Analysis",
+        "Investment Recommendations",
     ],
 )
+
 
 if st.button("Generate Financial Insights") and company_name:
     with st.spinner("Analyzing..."):
@@ -54,3 +80,19 @@ if st.button("Generate Financial Insights") and company_name:
         )
         st.subheader("AI Financial Report")
         st.write(response)
+
+        # Analyze sentiment from the summary
+        sentiment_json = sentiment_chain.run(summary=response)
+
+        # Try to parse and display the result
+        import json
+
+        try:
+            parsed_sentiment = json.loads(sentiment_json)
+            st.markdown("### Sentiment Analysis")
+            st.write(f"**Sentiment:** {parsed_sentiment['sentiment']}")
+            st.write(f"**Score:** {parsed_sentiment['score']}")
+            st.write(f"**Explanation:** {parsed_sentiment['reason']}")
+        except Exception as e:
+            st.warning("⚠️ Couldn't parse sentiment output from AI.")
+            st.text(sentiment_json)
