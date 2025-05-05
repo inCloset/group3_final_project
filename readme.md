@@ -1,60 +1,105 @@
-# Group 2 Final Project: Open A.I API vs Customized Finacial Model
+# 📊 Group 2 Final Project: OpenAI API vs Customized Financial Model
 
-# 📊 Financial Insights Generator (Open AI API)
+This project compares two distinct approaches for deriving insights from financial or sales data:
 
-A Streamlit web app that uses OpenAI's language model and LangChain to generate professional financial summaries, sentiment analyses, and long-term forecasts for any public company based on user-selected report types.
+1. **OpenAI-Powered Financial Insight Generator** – A smart interface that interprets and summarizes financial data using a Large Language Model (LLM).
+2. **Customized Financial Model** – A robust Python script that consolidates and transforms structured sales data into a cleaned, analysis-ready format.
 
 ---
-## 🚀 Features
 
+## 🤖 OpenAI Financial Insight Generator
+
+A Streamlit web app that uses OpenAI’s language model and LangChain to generate professional financial summaries, sentiment analyses, and long-term forecasts for any public company.
+
+### 🚀 Features
 - Generates AI-powered financial reports (earnings, forecasts, CEO tone, etc.)
-- Performs sentiment analysis (positive, neutral, negative) with score and reasoning
-- Auto-infers company ticker if not provided
-- Clean and interactive Streamlit UI
----
-## 🧠 How It Works
+- Performs sentiment analysis with a score and natural language reasoning
+- Auto-detects company tickers
+- Clean, interactive Streamlit interface
 
-This app uses two LangChain `LLMChain` pipelines:
+### 🧠 How It Works
+This app uses two `LangChain` `LLMChain` pipelines:
 
 1. **Financial Summary Chain**  
-   Uses a prompt template to guide the LLM in generating a financial report based on:
+   Inputs:
    - `company_name` (user input)
-   - `report_type` (select box options)
+   - `report_type` (dropdown selection)  
+   Output: Analyst-style report
 
 2. **Sentiment Analysis Chain**  
-   Takes the AI-generated report and runs a separate prompt to extract:
-   - Overall sentiment (positive/neutral/negative)
-   - Sentiment score (from -1.0 to +1.0)
-   - Explanation (natural language reasoning)
+   Inputs: AI-generated report  
+   Output:
+   - Sentiment classification (Positive, Neutral, Negative)
+   - Score (-1.0 to +1.0)
+   - Natural language explanation
+
+### 🔌 Integrations
+- **OpenAI GPT Model** via API key
+- **LangChain** prompt chains
+- **Streamlit** for live app UI
+- **Dotenv** for secure environment management
+
+### ⚠️ Limitations
+- Requires stable internet and API access
+- Quality depends on LLM’s knowledge cutoff (may not reflect latest earnings)
+- Doesn’t handle raw numerical sales data or files directly
+
+### ⚙️ Optimization Opportunities
+- Add memory and user history to improve follow-up questions
+- Fine-tune prompt templates for improved accuracy
+- Add data visualization (e.g., charts) to supplement text reports
 
 ---
 
-# Key Code:
-## Load environment variables
-load_dotenv()
-API_KEY = os.getenv("OPENAI_API_KEY") #Make sure personal API Key is used (.env can be used)
----
+## 📂 Customized Financial Model
 
-# 📊 Customized Finacial Model
-This script automates the process of consolidating and cleaning multiple sales CSV files stored in a specified folder. It standardizes key columns, converts data types, creates a new sales category, and provides the option to filter the final dataset by a specific year.
+A Python-based ETL (Extract, Transform, Load) script that cleans, merges, and processes sales data from multiple `.csv` files into a unified dataset.
 
-## ⚙️ Implementation
-
+### ⚙️ Implementation
 - **Language**: Python 3.x
-- **Libraries Used**:
-  - `os` – to traverse the file system
-  - `pandas` – for data processing and manipulation
+- **Libraries**:
+  - `os`: File system access
+  - `pandas`: Data transformation and merging
 
-### Main Features:
-- Scans a directory for CSV files containing "sales" in the filename.
-- Reads and validates each file to ensure required columns are present.
-- Standardizes column names and data types.
-- Adds a `Sales Category` column based on `Sales Amount`.
-- Optionally filters results by year.
-- Combines all clean files into one `DataFrame` with a `source_file` indicator.
+### 🛠️ Main Features
+- Recursively scans a folder for `sales`-named `.csv` files
+- Standardizes inconsistent column names
+- Converts `Sales` and `Order Date` to numeric and datetime formats
+- Creates a new `Sales Category` (e.g., High, Medium, Low) based on thresholds
+- Optionally filters by a specific year
+- Adds `source_file` to track origin of each row
 
--  **Sentiment Analysis Chain**  
-  
+### 🔌 Integrations
+- File system automation via `os.listdir()`
+- Data parsing with `pandas`
+- Optional year filtering logic
+- Easily extensible into dashboards or ML pipelines
 
+### ✅ Unique Capabilities (vs OpenAI Code)
+- Handles **real structured data files**
+- Automates **batch ingestion** of many CSVs
+- Adds **custom logic** for categorizing rows numerically
+- Doesn’t require internet or an external API
 
+### ⚠️ Limitations
+- No UI—requires command line or script runner
+- No out-of-the-box predictive/forecasting capability
+- Limited error handling/logging in current form
 
+### ⚙️ Optimization Opportunities
+- Modularize functions for reuse or testing
+- Add logging and exception handling
+- Create a GUI (e.g., using Tkinter or Streamlit) for accessibility
+
+---
+
+## 🔁 Shared Strengths & Weaknesses
+
+| Area              | Both Excel At                    | Both Can Improve                  |
+|-------------------|----------------------------------|-----------------------------------|
+| **Data Parsing**   | Clean, standardize inputs        | Error handling is minimal         |
+| **Pandas Usage**   | Use powerful transformations     | No modular testing                |
+| **Output Ready**   | Generate final `.csv` or display | Hardcoded logic — could be config-driven |
+| **Reusability**    | Extendable by developers         | Comments/docstrings could be clearer |
+
+---
