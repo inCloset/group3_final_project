@@ -43,6 +43,7 @@ This app uses two `LangChain` `LLMChain` pipelines:
 - Requires stable internet and API access
 - Quality depends on LLM’s knowledge cutoff (may not reflect latest earnings)
 - Doesn’t handle raw numerical sales data or files directly
+- In some cases the especially when using sentiment analysis the Model seems to only repeat the data given and does not actually anaysis.
 
 ### ⚙️ Optimization Opportunities
 - Add memory and user history to improve follow-up questions
