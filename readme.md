@@ -29,11 +29,11 @@ This app uses two LangChain `LLMChain` pipelines:
 
 ---
 
-## Key Code:
-
-# Load environment variables
+# Key Code:
+## Load environment variables
 load_dotenv()
 API_KEY = os.getenv("OPENAI_API_KEY") #Make sure personal API Key is used (.env can be used)
+---
 
 # 📊 Customized Finacial Model
 This script automates the process of consolidating and cleaning multiple sales CSV files stored in a specified folder. It standardizes key columns, converts data types, creates a new sales category, and provides the option to filter the final dataset by a specific year.
@@ -54,10 +54,7 @@ This script automates the process of consolidating and cleaning multiple sales C
 - Combines all clean files into one `DataFrame` with a `source_file` indicator.
 
 -  **Sentiment Analysis Chain**  
-   Takes the AI-generated report and runs a separate prompt to extract:
-   - Overall sentiment (positive/neutral/negative)
-   - Sentiment score (from -1.0 to +1.0)
-   - Explanation (natural language reasoning)
+  
 
 
 
