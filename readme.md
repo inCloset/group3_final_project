@@ -117,3 +117,5 @@ API Key formats:
 | **Reusability**    | Extendable by developers         | Comments/docstrings could be clearer |
 
 ---
+## Images and Art ##
+- All images were created by `DALL-E 2` Open A.I
