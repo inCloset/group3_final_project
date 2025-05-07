@@ -91,6 +91,13 @@ A Python-based ETL (Extract, Transform, Load) script that cleans, merges, and pr
 - Modularize functions for reuse or testing
 - Add logging and exception handling
 - Create a GUI (e.g., using Tkinter or Streamlit) for accessibility
+---
+## Key API needed
+
+- SEC IO API key
+- Financial Modeling Prep API Key
+- Open AI API Key
+- An account for SEC.gov
 
 ---
 
