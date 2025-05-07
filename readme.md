@@ -98,8 +98,8 @@ A Python-based ETL (Extract, Transform, Load) script that cleans, merges, and pr
 - Financial Modeling Prep API Key
 - Open AI API Key
 - An account for SEC.gov
-  "SEC_API_KEY
 
+  SEC_API_KEY
 OPENAI_API_KEY
 FMP_API_KEY=
 SEC_API EMAIL for email get request to SEC endpoint"
