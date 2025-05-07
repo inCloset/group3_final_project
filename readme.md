@@ -99,11 +99,11 @@ A Python-based ETL (Extract, Transform, Load) script that cleans, merges, and pr
 - Open AI API Key
 - An account for SEC.gov
 
-API Key formates:
-- SEC_API_KEY
-- OPENAI_API_KEY
-- FMP_API_KEY=
-- SEC_API EMAIL for email get request to SEC endpoint
+API Key formats:
+- `SEC_API_KEY`
+- `OPENAI_API_KEY`
+- `FMP_API_KEY=`
+- `SEC_API EMAIL` for email get request to SEC endpoint
 
 ---
 
